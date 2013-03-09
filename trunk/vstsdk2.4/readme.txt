@@ -1,0 +1,1 @@
+Put vstsdk2.4 files here

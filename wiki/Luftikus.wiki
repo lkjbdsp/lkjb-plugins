@@ -4,6 +4,9 @@ Luftikus is a digital adaption to an analog EQ with fext half-octave bands and a
 
 http://lkjb-plugins.googlecode.com/files/lkjb_luftikus.png
 
+New with version 1.1.0:
+http://lkjb-plugins.googlecode.com/files/lkjb_luftikus_newgui.png
+
 = Features = 
 
 == Bands and Shelves==

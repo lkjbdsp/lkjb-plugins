@@ -239,7 +239,7 @@ void EqDsp::setupFilter(Type type)
 		{
 		case kHighOff:
 			b[0] = 0; b[1] = 0; b[2] = 0;
-			a[0] = 1; a[2] = 0; a[3] = 0;
+			a[0] = 1; a[2] = 0; a[2] = 0;
 			break;
 		case kHigh2k5:
 			CoeffCreator::setCoeffs(CoeffCreator::kA2k5, sampleRate, b, a);

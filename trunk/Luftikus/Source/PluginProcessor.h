@@ -99,6 +99,16 @@ public:
 		kNumParameters
 	};
 
+	enum GUIType
+	{
+		kLuftikus,
+		kLkjb,
+		kGui,
+
+		kNumTypes
+	};
+
+
 	//==============================================================================
 	LuftikusAudioProcessor();
 	~LuftikusAudioProcessor();
@@ -144,13 +154,25 @@ public:
 	void setStateInformation (const void* data, int sizeInBytes);
 	bool silenceInProducesSilenceOut(void) const;
 
+	double getTailLengthSeconds() const;
+
 	const MasterVolume& getMasterVolume() const;
+
+	void setGuiType(GUIType newType);
+	GUIType getGuiType();
 
 	bool showTooltips;
 
+	GUIType getTypeFromFile();
+	GUIType guiType;
+
 private:
 
+
+	File guiTypeFile;
 	MultiEq eqDsp;
+
+	bool fixFLSurround;
 
 	float analog;
 	float mastering;

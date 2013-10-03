@@ -10,15 +10,28 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#pragma warning (disable:4100)
+
+#if JUCE_WINDOWS
+#include "../../../juce/modules/juce_audio_plugin_client/utility/juce_PluginHostType.h"
+#endif
+//#pragma warning (disable:4100)
 
 //==============================================================================
 LuftikusAudioProcessor::LuftikusAudioProcessor()
 : showTooltips(true),
+  guiType(kGui),
+  guiTypeFile(File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("lkjb").getChildFile("Luftikus").getChildFile("Luftikus_GUI.xml")),
   eqDsp(jmax(JucePlugin_MaxNumInputChannels, JucePlugin_MaxNumOutputChannels)),
   analog(0.f),
   mastering(0.f)
 {
+	//guiType = getTypeFromFile();
+#if JUCE_WINDOWS
+	PluginHostType host;
+	fixFLSurround = host.isFruityLoops();
+#else
+	fixFLSurround = false;
+#endif
 }
 
 LuftikusAudioProcessor::~LuftikusAudioProcessor()
@@ -181,12 +194,12 @@ const String LuftikusAudioProcessor::getOutputChannelName (int channelIndex) con
 	return String (channelIndex + 1);
 }
 
-bool LuftikusAudioProcessor::isInputChannelStereoPair (int index) const
+bool LuftikusAudioProcessor::isInputChannelStereoPair (int /*index*/) const
 {
 	return true;
 }
 
-bool LuftikusAudioProcessor::isOutputChannelStereoPair (int index) const
+bool LuftikusAudioProcessor::isOutputChannelStereoPair (int /*index*/) const
 {
 	return true;
 }
@@ -219,16 +232,16 @@ int LuftikusAudioProcessor::getCurrentProgram()
 	return 0;
 }
 
-void LuftikusAudioProcessor::setCurrentProgram (int index)
+void LuftikusAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
-const String LuftikusAudioProcessor::getProgramName (int index)
+const String LuftikusAudioProcessor::getProgramName (int /*index*/)
 {
 	return String::empty;
 }
 
-void LuftikusAudioProcessor::changeProgramName (int index, const String& newName)
+void LuftikusAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
 {
 }
 
@@ -268,17 +281,33 @@ void LuftikusAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 		}
 		break;
 	case 6:
+		{
 			float* ch0 = buffer.getSampleData(0);
 			float* ch1 = buffer.getSampleData(1);
-			float* ch2 = buffer.getSampleData(3);
-			float* ch3 = buffer.getSampleData(4);
+			float* ch2 = buffer.getSampleData(2);
+			float* ch3 = buffer.getSampleData(3);
 			float* ch4 = buffer.getSampleData(4);
 			float* ch5 = buffer.getSampleData(5);
 
 			float* data[6] = {ch0, ch1, ch2, ch3, ch4, ch5};
 
-			eqDsp.processBlock(data, 6, numSamples);
-			data[0] = nullptr;
+			if (fixFLSurround)
+			{
+				eqDsp.processBlock(data, 2, numSamples);
+
+				zeromem(ch2, numSamples * sizeof(float));
+				zeromem(ch3, numSamples * sizeof(float));
+				zeromem(ch4, numSamples * sizeof(float));
+				zeromem(ch5, numSamples * sizeof(float));
+			}
+			else
+			{
+				eqDsp.processBlock(data, 6, numSamples);			
+			}
+		}
+		break;
+	default:
+		jassertfalse;
 		break;
 	}
 
@@ -293,20 +322,18 @@ bool LuftikusAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* LuftikusAudioProcessor::createEditor()
 {
-	return new LuftikusAudioProcessorEditor (this);
+	return new LuftikusAudioProcessorEditor (this, guiType);
 }
 
 //==============================================================================
 void LuftikusAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-
 	XmlElement xml("LUFTIKUSDATA");
 
 	for (int i=0; i<getNumParameters(); ++i)
 		xml.setAttribute(getParameterName(i).replace(" ", "_", false).replace(".", "-", false), getParameter(i));
 
 	xml.setAttribute("tooltips", showTooltips ? 1 : 0);
-
 	copyXmlToBinary(xml, destData);
 }
 
@@ -328,11 +355,68 @@ bool LuftikusAudioProcessor::silenceInProducesSilenceOut(void) const
 	return false;
 }
 
+double LuftikusAudioProcessor::getTailLengthSeconds() const
+{
+	return 0;
+}
+
 const MasterVolume& LuftikusAudioProcessor::getMasterVolume() const
 {
 	return masterVolume;
 }
+void LuftikusAudioProcessor::setGuiType(LuftikusAudioProcessor::GUIType newType)
+{
+	guiType = newType;
 
+	if (guiType != getTypeFromFile())
+	{
+		if (guiType == kGui)
+		{
+			guiTypeFile.deleteFile();
+
+			if (guiTypeFile.getParentDirectory().getNumberOfChildFiles(File::findFilesAndDirectories) == 0)
+				guiTypeFile.getParentDirectory().deleteFile();
+		}
+		else
+		{
+			ScopedPointer<XmlElement> xml(XmlDocument::parse(guiTypeFile));
+
+			if (xml == nullptr)
+				xml = new XmlElement("LUFTIKUS");
+
+			const String type(guiType == kLuftikus ? "Luftikus" : guiType == kLkjb ? "lkjb" : "gui");
+			xml->setAttribute("guitype", type);
+			DBG("Setting " + type);
+
+			guiTypeFile.deleteFile();
+			guiTypeFile.create();
+			xml->writeToFile(guiTypeFile, "");
+		}		
+	}
+}
+LuftikusAudioProcessor::GUIType LuftikusAudioProcessor::getGuiType()
+{
+	//return kLuftikus;
+	return guiType;
+}
+
+LuftikusAudioProcessor::GUIType LuftikusAudioProcessor::getTypeFromFile()
+{
+	ScopedPointer<XmlElement> xml(XmlDocument::parse(guiTypeFile));
+
+	if (xml != nullptr && xml->hasTagName("LUFTIKUS") && xml->hasAttribute("guitype"))
+	{
+		const String type(xml->getStringAttribute("guitype"));
+		DBG("Getting " + type);
+
+		if (type == "Luftikus")
+			return kLuftikus;
+		if (type == "lkjb")
+			return kLkjb;
+	}
+
+	return kGui;
+}
 
 //==============================================================================
 // This creates new instances of the plugin..

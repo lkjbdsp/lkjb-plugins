@@ -79,6 +79,9 @@ namespace CoeffCreator
 				b[0]=2.07898706896552; b[1]=-2.22867413793103; b[2]=0.149687068965517;
 				a[0]=1; a[1]=-0.00577869972806295; a[2]=0;
 				break;
+			default:
+				jassertfalse;
+				break;
 			}
 			break;
 		case k48000:
@@ -123,6 +126,9 @@ namespace CoeffCreator
 			case kA40k:
 				b[0]=2.26547619047619; b[1]=-2.43765238095238; b[2]=0.17217619047619;
 				a[0]=1; a[1]=-0.00878377960664006; a[2]=0;
+				break;
+			default:
+				jassertfalse;
 				break;
 			}
 			break;
@@ -169,6 +175,9 @@ namespace CoeffCreator
 				b[0]=3.67794871794872; b[1]=-3.76989743589744; b[2]=0.091948717948718;
 				a[0]=1; a[1]=-0.0760177592938844; a[2]=0;
 				break;
+			default:
+				jassertfalse;
+				break;
 			}
 			break;
 		case k96000:
@@ -213,6 +222,9 @@ namespace CoeffCreator
 			case kA40k:
 				b[0]=3.91611253196931; b[1]=-4.00422506393862; b[2]=0.0881125319693094;
 				a[0]=1; a[1]=-0.0937218203335811; a[2]=0;
+				break;
+			default:
+				jassertfalse;
 				break;
 			}
 			break;
@@ -259,6 +271,9 @@ namespace CoeffCreator
 				b[0]=5.65878208354303; b[1]=-5.69556416708606; b[2]=0.0367820835430297;
 				a[0]=1; a[1]=-0.275713183025195; a[2]=0;
 				break;
+			default:
+				jassertfalse;
+				break;
 			}
 			break;
 		case k192000:
@@ -304,7 +319,13 @@ namespace CoeffCreator
 				b[0]=5.90050327126321; b[1]=-5.93885654252642; b[2]=0.0383532712632109;
 				a[0]=1; a[1]=-0.306140197186814; a[2]=0;
 				break;
+			default:
+				jassertfalse;
+				break;
 			}
+			break;
+		default:
+			jassertfalse;
 			break;
 		}
 	}

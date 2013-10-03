@@ -1,6 +1,6 @@
 = Summery =
 
-Luftikus is a digital adaption to an analog EQ with fext half-octave bands and additional high frequency boost. As an improvement to the hardware it allows deeper cuts and supports a keep-gain mode where overall gain changes are avoided.
+Luftikus is a digital adaption to an analog EQ with fixed half-octave bands and additional high frequency boost. As an improvement to the hardware it allows deeper cuts and supports a keep-gain mode where overall gain changes are avoided.
 
 http://lkjb-plugins.googlecode.com/files/lkjb_luftikus.png
 

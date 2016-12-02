@@ -1,3 +1,3 @@
 Put JUCE files here.
 
-Currently used JUCE version 2.1.3.
+Currently used JUCE version 4.3.0.

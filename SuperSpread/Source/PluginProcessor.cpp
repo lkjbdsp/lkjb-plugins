@@ -14,19 +14,14 @@
 
 //==============================================================================
 SuperSpreadAudioProcessor::SuperSpreadAudioProcessor()
-//#ifndef JucePlugin_PreferredChannelConfigurations
-//     : AudioProcessor (BusesProperties()
-//                     #if ! JucePlugin_IsMidiEffect
-//                      #if ! JucePlugin_IsSynth
-//                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
-//                      #endif
-//                       .withOutput ("Output", AudioChannelSet::stereo(), true)
-//                     #endif
-//                       )
-//#endif
 {
     parameterState = new AudioProcessorValueTreeState(*this, nullptr);
-    parameterState->createAndAddParameter("Spread", "Spread", "", NormalisableRange<float> (0.f, 100.f), 0.f, nullptr, nullptr);
+    const NormalisableRange<float> gainRange(-24, 6.f);    
+    std::function<String(float)> valToStr = [] (float val) { return String(val, 1); };
+    std::function<float(const String&)> strToVal = [] (const String& s) { return s.getFloatValue(); };
+
+    parameterState->createAndAddParameter("Spread", "Spread", "", NormalisableRange<float> (0.f, 100.f), 0.f, valToStr, strToVal);
+    parameterState->createAndAddParameter("Mix", "Mix", "", NormalisableRange<float> (0.f, 200.f), 100.f, valToStr,  strToVal);
 
     for (int i=0; i<12; ++i)
         shifter.add(new PitchShifter(2048));
@@ -99,42 +94,24 @@ void SuperSpreadAudioProcessor::prepareToPlay (double /*sampleRate*/, int sample
 
 void SuperSpreadAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
-}
 
-//#ifndef JucePlugin_PreferredChannelConfigurations
-//bool SuperSpreadAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
-//{
-//  #if JucePlugin_IsMidiEffect
-//    ignoreUnused (layouts);
-//    return true;
-//  #else
-//    // This is the place where you check if the layout is supported.
-//    // In this template code we only support mono or stereo.
-//    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-//     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
-//        return false;
-//
-//    // This checks if the input layout matches the output layout
-//   #if ! JucePlugin_IsSynth
-//    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-//        return false;
-//   #endif
-//
-//    return true;
-//  #endif
-//}
-//#endif
+}
 
 void SuperSpreadAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& /*midiMessages*/)
 {
     unsigned int csr = _mm_getcsr();
     _mm_setcsr(csr | 0x8040);
+    AudioProcessorParameter* mixParam = parameterState->getParameter("Mix");
+    const NormalisableRange<float> mixRange(parameterState->getParameterRange("Mix"));
 
     const float spread0 = parameterState->getParameter("Spread")->getValue();
-    //const float spreadGain = std::pow(spread0, 0.1f);
-    const float spreadGain = jmin(spread0/0.1f, 1.f);
+    const float mix = mixRange.convertFrom0to1(mixParam->getValue());
+    const float detuneFade = jmin(spread0/0.1f, 1.f);
+
+    const float detunedGain = mix >= 100.f ? 1.f : mix / 100.f;
+    const float dryGain = mix <= 100.f ? 1.f : detuneFade < 1.f ? jmax(0.5f * (1.f - detuneFade), (200.f - mix) / 100.f) : (200.f - mix) / 100.f;
+    const float spreadGain = detunedGain * detuneFade;
+
 
     const float spread = 0.5f * spread0*spread0;
 
@@ -152,6 +129,7 @@ void SuperSpreadAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     }
 
     mainDelay.processBlock(chL, chR, numSamples);
+    buffer.applyGain(dryGain);
 
     const float maxPitches[6] = {0.893f, 0.939f, 0.98f, 1.02f, 1.064f, 1.11f}; 
 
@@ -164,12 +142,12 @@ void SuperSpreadAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
         float* procR = pitchBuffer.getWritePointer(i+6);
 
         shifter[i]->processBlock(procL, numSamples);
-        buffer.addFrom(0, 0, procL, numSamples, spreadGain);
+        buffer.addFrom(0, 0, procL, numSamples, spreadGain/* * gain*/);
 
         if (numChannels == 2)
         {
             shifter[i+6]->processBlock(procR, numSamples);
-            buffer.addFrom(1, 0, procR, numSamples, spreadGain);
+            buffer.addFrom(1, 0, procR, numSamples, spreadGain/* * gain*/);
         }
     }
 

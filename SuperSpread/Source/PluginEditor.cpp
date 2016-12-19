@@ -39,15 +39,21 @@ SuperSpreadAudioProcessorEditor::SuperSpreadAudioProcessorEditor (SuperSpreadAud
 {
     setLookAndFeel(lookAndFeel);
     addAndMakeVisible(spread);
-
     spread.setSliderStyle(Slider::RotaryVerticalDrag);
     spread.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
     spread.setColour(Label::outlineColourId, Colours::transparentBlack);
 
-    sliderAttachments.add(new AudioProcessorValueTreeState::SliderAttachment(*processor.parameterState, "Spread", spread));
-    spread.setRange(spread.getMinimum(), spread.getMaximum(), 0.1);    
+    addChildComponent(mix);
+    mix.setSliderStyle(Slider::RotaryVerticalDrag);
+	mix.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
+    mix.setColour(Label::outlineColourId, Colours::transparentBlack);
 
-    setSize (300, 120);
+    sliderAttachments.add(new AudioProcessorValueTreeState::SliderAttachment(*processor.parameterState, "Spread", spread));
+    sliderAttachments.add(new AudioProcessorValueTreeState::SliderAttachment(*processor.parameterState, "Mix", mix));
+    spread.setRange(spread.getMinimum(), spread.getMaximum(), 0.1);    
+    mix.setRange(mix.getMinimum(), mix.getMaximum(), 0.1);    
+
+    setSize (320, 120);
 }
 
 SuperSpreadAudioProcessorEditor::~SuperSpreadAudioProcessorEditor()
@@ -75,18 +81,39 @@ void SuperSpreadAudioProcessorEditor::paint (Graphics& g)
     const Font plain(Font(0.2f*h));
     g.setFont(bold);
     g.setColour(Colours::black);
-    g.drawText("Super", x0, 0, w0, h/2, Justification::bottomRight, false);
-    g.drawText("Spread", x0, h/2, w0, h/2, Justification::topRight, false);
+    g.drawText("Super", x0, 0, w0, h/2, Justification::bottomRight);
+    g.drawText(mix.isVisible() ? "Mix" : "Spread", x0, h/2, w0, h/2, Justification::topRight);
+
+    if (mix.isVisible())
+    {
+        g.setFont(10.f);
+        g.drawText("Click to switch back to Spread control", 0, h-15, w-10, 15, Justification::centredRight);
+    }
 
     const int w1 = plain.getStringWidth("lkjb");
     const int x1 = x0 + w0 - bold.getStringWidth("Super") - w1 - 10;
     g.setFont(plain);
     g.setColour(Colours::black.withAlpha(0.8f));
-    g.drawText("lkjb", x1, 0, w1, h*6/13, Justification::bottomRight, false);
-
+    g.drawText("lkjb", x1, 0, w1, h*6/13, Justification::bottomRight);
 }
 
 void SuperSpreadAudioProcessorEditor::resized()
 {
-    spread.setBounds(10, 10, 80, 100);
+	spread.setBounds(10, 10, 80, 100);
+	mix.setBounds(10, 10, 80, 100);
+}
+
+void SuperSpreadAudioProcessorEditor::mouseDown (const MouseEvent& /*e*/)
+{
+	if (mix.isVisible())
+	{
+		mix.setVisible(false);
+		spread.setVisible(true);
+	}
+	else
+	{
+		mix.setVisible(true);
+		spread.setVisible(false);
+	}
+	repaint();
 }

@@ -29,11 +29,14 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+	void mouseDown(const MouseEvent& e) override;
+
 private:
     
     SuperSpreadAudioProcessor& processor;
 
     Slider spread;
+	Slider mix;
     SharedResourcePointer<SuperSpreadLookAndFeel> lookAndFeel;
     OwnedArray<AudioProcessorValueTreeState::SliderAttachment> sliderAttachments;
 

@@ -3,6 +3,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+// Simple pitch shifter class using moving delay taps and a hann window. This is based on the algorithm used in mda Detune (http://mda.smartelectronix.com/)
 class PitchShifter
 {
 public:

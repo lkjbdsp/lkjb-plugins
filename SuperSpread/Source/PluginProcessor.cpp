@@ -158,6 +158,16 @@ void SuperSpreadAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     _mm_setcsr(csr);
 }
 
+void SuperSpreadAudioProcessor::processBlockBypassed (AudioBuffer<float>& buffer, MidiBuffer& /*midiMessages*/)
+{
+    const int numChannels = buffer.getNumChannels();
+    const int numSamples = buffer.getNumSamples();
+    float* chL = buffer.getWritePointer(0);
+    float* chR = numChannels == 2 ? buffer.getWritePointer(1) : nullptr;
+
+    mainDelay.processBlock(chL, chR, numSamples);
+}
+
 //==============================================================================
 bool SuperSpreadAudioProcessor::hasEditor() const
 {

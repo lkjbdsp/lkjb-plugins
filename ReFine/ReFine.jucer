@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="LuIheG" name="ReFine" projectType="audioplug" version="1.1.0"
+              bundleIdentifier="com.lkjb.ReFine" includeBinaryInAppConfig="1"
+              buildVST="1" buildVST3="1" buildAU="1" buildRTAS="0" buildAAX="0"
+              pluginName="ReFine" pluginDesc="ReFine" pluginManufacturer="lkjb"
+              pluginManufacturerCode="Lkjb" pluginCode="LkRf" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
+              pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="1"
+              pluginAUExportPrefix="ReFineAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.ReFine"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0"
+              buildAUv3="0" pluginIsMidiEffectPlugin="0">
+  <MAINGROUP id="gUxuDE" name="ReFine">
+    <GROUP id="{2DC48DCE-095E-DE95-C64A-5D8FB812F956}" name="Source">
+      <GROUP id="{17EB982A-BBB8-1DEC-D807-5D15B2D01E77}" name="ressources">
+        <FILE id="rSPcpR" name="background.png" compile="0" resource="1" file="Ressources/background.png"/>
+        <FILE id="w7tMq4" name="blue.png" compile="0" resource="1" file="Ressources/blue.png"/>
+        <FILE id="vJX9VO" name="green.png" compile="0" resource="1" file="Ressources/green.png"/>
+        <FILE id="RmN4Z4" name="red.png" compile="0" resource="1" file="Ressources/red.png"/>
+        <FILE id="kfZH3b" name="vu_blue.png" compile="0" resource="1" file="Ressources/vu_blue.png"/>
+        <FILE id="ishI5U" name="vu_green.png" compile="0" resource="1" file="Ressources/vu_green.png"/>
+        <FILE id="jWXNFi" name="vu_red.png" compile="0" resource="1" file="Ressources/vu_red.png"/>
+        <FILE id="HR7FG8" name="x2button.png" compile="0" resource="1" file="Ressources/x2button.png"/>
+      </GROUP>
+      <FILE id="P5OqMa" name="Analyzer.cpp" compile="1" resource="0" file="Source/Analyzer.cpp"/>
+      <FILE id="RGL3Ti" name="Analyzer.h" compile="0" resource="0" file="Source/Analyzer.h"/>
+      <FILE id="kArFlq" name="Buffers.cpp" compile="1" resource="0" file="Source/Buffers.cpp"/>
+      <FILE id="qIQlyc" name="Buffers.h" compile="0" resource="0" file="Source/Buffers.h"/>
+      <FILE id="C1QcHd" name="MiscDsp.cpp" compile="1" resource="0" file="Source/MiscDsp.cpp"/>
+      <FILE id="ziXCNU" name="MiscDsp.h" compile="0" resource="0" file="Source/MiscDsp.h"/>
+      <FILE id="L56rcX" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="dpSNaS" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="V6bHwU" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="xImdp5" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="ZK1upo" name="ReFineLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/ReFineLookAndFeel.cpp"/>
+      <FILE id="usRX7i" name="ReFineLookAndFeel.h" compile="0" resource="0"
+            file="Source/ReFineLookAndFeel.h"/>
+      <FILE id="JPx8oB" name="RefineDsp.cpp" compile="1" resource="0" file="Source/RefineDsp.cpp"/>
+      <FILE id="mLMA2M" name="RefineDsp.h" compile="0" resource="0" file="Source/RefineDsp.h"/>
+      <FILE id="b4BVVx" name="Visualisation.cpp" compile="1" resource="0"
+            file="Source/Visualisation.cpp"/>
+      <FILE id="NlaS00" name="Visualisation.h" compile="0" resource="0" file="Source/Visualisation.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="" vstFolder="../VST3 SDK"
+               vst3Folder="../VST3 SDK" extraDefs="">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="10.11 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
+                       isDebug="1" optimisation="1" targetName="lkjb_ReFine" cppLanguageStandard="c++11"
+                       cppLibType="libc++"/>
+        <CONFIGURATION name="Release" osxSDK="10.11 SDK" osxCompatibility="10.7 SDK"
+                       osxArchitecture="64BitUniversal" isDebug="0" optimisation="3"
+                       targetName="lkjb_ReFine" cppLanguageStandard="c++11" cppLibType="libc++"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../VST3 SDK"
+            extraCompilerFlags="/arch:SSE2" vst3Folder="../VST3 SDK" IPPLibrary="true">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="lkjb_ReFine"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="lkjb_ReFine"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
+      </MODULEPATHS>
+    </VS2015>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+</JUCERPROJECT>

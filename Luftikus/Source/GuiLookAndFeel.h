@@ -3,7 +3,7 @@
 
 #include "JuceHeader.h"
 
-class GuiLookAndFeel : public LookAndFeel
+class GuiLookAndFeel : public LookAndFeel_V2
 {
 public:
 	GuiLookAndFeel();
@@ -48,7 +48,7 @@ class GuiSlider : public Slider,
                   public Slider::Listener
 {
 public:
-	explicit GuiSlider (const String& componentName = String::empty);
+	explicit GuiSlider (const String& componentName = "");
 
 	GuiSlider (SliderStyle style, TextEntryBoxPosition textBoxPosition);
 

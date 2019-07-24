@@ -15,8 +15,8 @@ RefineDsp::RefineDsp()
   rms5 (static_cast<int> (44100*0.005)),
   rms (400, 100, 0.025),
   colors (1),
-  delayL (512),
-  delayR (512)
+  delayL (delaySamples44k1),
+  delayR (delaySamples44k1)
 {
 	setSampleRate(44100);
 	clear();
@@ -75,8 +75,9 @@ void RefineDsp::setSampleRate (double newSampleRate)
 		rms5.setSize(int(0.02*sampleRate));
 		trSmooth.setSampleRate(sampleRate, 0.3);
 
-		delayL.setSize(512 * int(sampleRate / 44100));
-		delayR.setSize(512 * int(sampleRate / 44100));
+        const int delaySamples = getLatencySamples();
+		delayL.setSize(delaySamples);
+		delayR.setSize(delaySamples);
 	}
 }
 
@@ -278,7 +279,6 @@ float RefineDsp::getLevel() const
 	return level;
 }
 
-
 bool RefineDsp::getRmsData (Array<float>& d, Array<uint32>& c) const
 {
 	{
@@ -294,5 +294,9 @@ bool RefineDsp::getRmsData (Array<float>& d, Array<uint32>& c) const
 	return rms.getData(d);
 }
 
+int RefineDsp::getLatencySamples() const
+{
+    return delaySamples44k1 * int(sampleRate / 44100);
+}
 
 

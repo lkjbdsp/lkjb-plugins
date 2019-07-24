@@ -108,8 +108,6 @@ GuiSlider::GuiSlider (const String& componentName)
 : Slider(componentName), 
   resetValue(0) 
 {		
-	//editor.setInputRestrictions(3, "0123456789.");
-	//editor.addListener(this);
 	addListener(this);
 	label.addListener(this);
 	label.setFont(Font(14.f));
@@ -140,7 +138,7 @@ void GuiSlider::resized()
 		label.setFont(Font(14.f));
 		label.setBounds(h+3, 0, w-h-5, 20);
 		label.setJustificationType(Justification::centredLeft);
-		label.setBorderSize(2, 2);
+		label.setBorderSize(BorderSize<int>(2, 2, 2, 2));
 	}
 	else
 	{
@@ -182,7 +180,7 @@ void GuiSlider::setLabelText()
 
 	if (interval > 0.9)
 		label.setText(String((int) val), dontSendNotification);
-	else if (interval > 0.4)
+	else if (interval > 0.09)
 		label.setText(String(val, 1), dontSendNotification);
 	else
 		label.setText(String(val, 2), dontSendNotification);

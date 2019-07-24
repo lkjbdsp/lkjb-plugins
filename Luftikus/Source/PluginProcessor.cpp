@@ -11,9 +11,9 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-#if JUCE_WINDOWS
-#include "../../../juce/modules/juce_audio_plugin_client/utility/juce_PluginHostType.h"
-#endif
+//#if JUCE_WINDOWS
+//#include "../../../juce/modules/juce_audio_plugin_client/utility/juce_PluginHostType.h"
+//#endif
 //#pragma warning (disable:4100)
 
 //==============================================================================
@@ -132,7 +132,7 @@ const String LuftikusAudioProcessor::getParameterName (int index)
 		return "MasterVol";
 	default:
 		jassertfalse;
-		return String::empty;
+		return "";
 	}
 }
 
@@ -238,7 +238,7 @@ void LuftikusAudioProcessor::setCurrentProgram (int /*index*/)
 
 const String LuftikusAudioProcessor::getProgramName (int /*index*/)
 {
-	return String::empty;
+	return "";
 }
 
 void LuftikusAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
@@ -267,14 +267,14 @@ void LuftikusAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 	{
 	case 1:
 		{
-			float* in = buffer.getSampleData(0);
+			float* in = buffer.getWritePointer(0);
 			eqDsp.processBlock(&in, 1, numSamples);
 		}
 		break;
 	case 2:
 		{
-			float* inL = buffer.getSampleData(0);
-			float* inR = buffer.getSampleData(1);
+			float* inL = buffer.getWritePointer(0);
+			float* inR = buffer.getWritePointer(1);
 			float* data[2] = {inL, inR};
 
 			eqDsp.processBlock(data, 2, numSamples);
@@ -282,12 +282,12 @@ void LuftikusAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 		break;
 	case 6:
 		{
-			float* ch0 = buffer.getSampleData(0);
-			float* ch1 = buffer.getSampleData(1);
-			float* ch2 = buffer.getSampleData(2);
-			float* ch3 = buffer.getSampleData(3);
-			float* ch4 = buffer.getSampleData(4);
-			float* ch5 = buffer.getSampleData(5);
+			float* ch0 = buffer.getWritePointer(0);
+			float* ch1 = buffer.getWritePointer(1);
+			float* ch2 = buffer.getWritePointer(2);
+			float* ch3 = buffer.getWritePointer(3);
+			float* ch4 = buffer.getWritePointer(4);
+			float* ch5 = buffer.getWritePointer(5);
 
 			float* data[6] = {ch0, ch1, ch2, ch3, ch4, ch5};
 

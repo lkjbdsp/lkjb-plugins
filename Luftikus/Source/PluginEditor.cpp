@@ -25,212 +25,50 @@ LuftikusAudioProcessorEditor::LuftikusAudioProcessorEditor (LuftikusAudioProcess
 	  modalCallback(nullptr)
 	  //showInfo(false)
 {
-
-	//{
-	//	guiSelector[LuftikusAudioProcessor::kLuftikus].setButtonText("lkjb old");
-	//	guiSelector[LuftikusAudioProcessor::kLkjb].setButtonText("lkjb new");
-	//	guiSelector[LuftikusAudioProcessor::kGui].setButtonText("Analog");
-
-	//	for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-	//	{
-	//		addChildComponent(&guiSelector[i]);
-	//		guiSelector[i].addListener(this);
-	//		guiSelector[i].setRadioGroupId(0x10000);
-	//	}
-	//}
-
-	switch(type)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	initLuftikus();
-	//	break;
-
-	//case LuftikusAudioProcessor::kLkjb:
-	//	initLkjb();
-	//	break;
-
-	default:
-	case LuftikusAudioProcessor::kGui:
-		initGui();
-		break;
-	};
+	initGui();
 }
 
 LuftikusAudioProcessorEditor::~LuftikusAudioProcessorEditor()
 {
 	tooltips = nullptr;
 	Proc->guiType = Proc->getTypeFromFile();
+    setLookAndFeel(nullptr);
 }
-
 
 void LuftikusAudioProcessorEditor::resized()
 {
-
-	//mastering.setVisible(! showInfo);
-	//analog.setVisible(! showInfo);
-	//keepGain.setVisible(! showInfo);
-
-	//for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-	//	types[i].setVisible(! showInfo);
-
-	//for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-	//	guiSelector[i].setVisible(showInfo);
-
-	switch (guiType)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	resizedLuftikus();
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	resizedLkjb();
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		resizedGui();
-		break;
-	}
+	resizedGui();
 }
 
 //==============================================================================
 void LuftikusAudioProcessorEditor::paint (Graphics& g)
 {
-	switch (guiType)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	paintLuftikus(g);
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	paintLkjb(g);
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		paintGui(g);
-		break;
-	}
-
-	//if (showInfo)
-	//{
-	//	Colour colour;
-	//	juce::Rectangle<float> rect;
-	//	AttributedString as;
-	//	
-	//	switch (guiType)
-	//	{
-	//	case LuftikusAudioProcessor::kLuftikus:
-	//		colour = Colours::black;
-	//		rect = juce::Rectangle<float> (20, 20, 350, 80);
-	//		break;
-	//	case LuftikusAudioProcessor::kLkjb:
-	//		colour = Colours::black;
-	//		rect = juce::Rectangle<float> (20, 30, 350, 80);
-	//		break;
-	//	case LuftikusAudioProcessor::kGui:
-	//		colour = Colours::black;
-	//		rect = juce::Rectangle<float> (50, 50, 400, 100);
-	//		as.append("GUI design by Simon Gasser\n\n", Font(22.f), colour);
-	//		break;
-	//	}
-
-
-	//	//as.append("\nYou need to reopen the GUI for changes to take effect.\n\n", Font(12.f), colour);
-	//	as.append("VST is a trademark of Steinberg Media Technologies GmbH", Font(15.f), colour);
-	//	
-	//	as.draw(g, rect);
-
-	//}
+	paintGui(g);
 }
 
 void LuftikusAudioProcessorEditor::timerCallback()
 {
-	switch (guiType)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	timerCallbackLuftikus();
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	timerCallbackLkjb();
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		timerCallbackGui();
-		break;
-	}
-
-	{
-		//showTooltips.setToggleState(Proc->showTooltips, dontSendNotification);
-	}
+	timerCallbackGui();
 }
-
 
 void LuftikusAudioProcessorEditor::sliderValueChanged (Slider* slider)
 {
-	switch(guiType)
+	for (int i=0; i<EqDsp::kShelfHi; ++i)
 	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	for (int i=0; i<EqDsp::kShelfHi; ++i)
-	//	{
-	//		if (&luftikusSliders[i] == slider)
-	//		{
-	//			const float sv = (float) luftikusSliders[i].getValue();
-	//			const float newValue = sv / 20.f + 0.5f;
-	//			Proc->setParameterNotifyingHost(i, newValue);
-	//			return;
-	//		}
-	//	}
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	for (int i=0; i<EqDsp::kShelfHi; ++i)
-	//	{
-	//		if (&lkjbSliders[i] == slider)
-	//		{
-	//			const float sv = (float) lkjbSliders[i].getValue();
-	//			const float newValue = sv / 20.f + 0.5f;
-	//			Proc->setParameterNotifyingHost(i, newValue);
-	//			return;
-	//		}
-	//	}
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		for (int i=0; i<EqDsp::kShelfHi; ++i)
+		if (&guiSliders[i] == slider)
 		{
-			if (&guiSliders[i] == slider)
-			{
-				const float sv = (float) guiSliders[i].getValue();
-				const float newValue = sv / 20.f + 0.5f;
-				Proc->setParameterNotifyingHost(i, newValue);
-				return;
-			}
+			const float sv = (float) guiSliders[i].getValue();
+			const float newValue = sv / 20.f + 0.5f;
+			Proc->setParameterNotifyingHost(i, newValue);
+			return;
 		}
-		break;
 	}
 
-	//if (&luftikusSliders[EqDsp::kShelfHi] == slider)
-	//{
-	//	const float newValue = (float) luftikusSliders[EqDsp::kShelfHi].getValue() / 10.f;
-	//	Proc->setParameterNotifyingHost(EqDsp::kShelfHi, newValue);
-	//}
-	//else if (&lkjbSliders[EqDsp::kShelfHi] == slider)
-	//{
-	//	const float newValue = (float) lkjbSliders[EqDsp::kShelfHi].getValue() / 10.f;
-	//	Proc->setParameterNotifyingHost(EqDsp::kShelfHi, newValue);
-	//}
-	//else 
 	if (&guiSliders[EqDsp::kShelfHi] == slider)
 	{
 		const float newValue = (float) guiSliders[EqDsp::kShelfHi].getValue() / 10.f;
 		Proc->setParameterNotifyingHost(EqDsp::kShelfHi, newValue);
 	}
-	//else if (slider == &luftikusMasterVol)
-	//{
-	//	const float newValue = Proc->getMasterVolume().plainToNormalized((float) luftikusMasterVol.getValue());
-	//	Proc->setParameterNotifyingHost(LuftikusAudioProcessor::kMasterVol, newValue);
-	//}
-	//else if (slider == &lkjbMasterVol)
-	//{
-	//	const float newValue = Proc->getMasterVolume().plainToNormalized((float) lkjbMasterVol.getValue());
-	//	Proc->setParameterNotifyingHost(LuftikusAudioProcessor::kMasterVol, newValue);
-	//}
 	else if (slider == &guiMasterVol)
 	{
 		const float newValue = Proc->getMasterVolume().plainToNormalized((float) guiMasterVol.getValue());
@@ -262,19 +100,8 @@ void LuftikusAudioProcessorEditor::buttonClicked (Button* button)
 	{
 		Proc->setParameterNotifyingHost(LuftikusAudioProcessor::kKeepGain, keepGain.getToggleState() ? 1.f : 0.f);		
 	}
-	//else if (button == &showTooltips)
-	//{
-	//	Proc->showTooltips = ! Proc->showTooltips;
-	//	updateTooltipState();
-	//}
 	else
 	{
-		//for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-		//{
-		//	if (button == &(guiSelector[i]))
-		//		Proc->setGuiType((LuftikusAudioProcessor::GUIType) i);
-		//}
-
 		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
 		{
 			if (button == &types[i])
@@ -291,28 +118,13 @@ void LuftikusAudioProcessorEditor::mouseDown(const MouseEvent& e)
 {
 	juce::Rectangle<int> rect;
 
-	switch (guiType)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	rect = juce::Rectangle<int> (13, 120, 100, 18);
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	rect = juce::Rectangle<int> (22, 119, 102, 22);
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		rect = juce::Rectangle<int> (108, 156, 115, 40);
-		break;
-	}
+	rect = juce::Rectangle<int> (108, 156, 115, 40);
 
 	if (rect.contains(e.getPosition()) && showTooltips == nullptr)
 	{
 		showTooltips = new PopupMenu();
 		showTooltips->addItem(1, "Show Tooltips", true, tooltips != nullptr);
 		showTooltips->showMenuAsync(PopupMenu::Options(), modalCallback = new ModalCallback(this));
-		//showInfo = ! showInfo;
-		//resized();
-		//repaint();
 	}
 }
 
@@ -323,7 +135,7 @@ String LuftikusAudioProcessorEditor::getTooltip()
 	if (rect.contains(getMouseXYRelative()))
 		return "Click here to toggle tooltips";
 	
-	return String::empty;
+	return "";
 }
 
 void LuftikusAudioProcessorEditor::modalReturn(int returnValue)
@@ -339,178 +151,6 @@ void LuftikusAudioProcessorEditor::modalReturn(int returnValue)
 	}
 
 	showTooltips = nullptr;
-}
-
-void LuftikusAudioProcessorEditor::initLuftikus()
-{/*
-	for (int i=0; i<EqDsp::kNumTypes; ++i)
-	{
-		addAndMakeVisible(&luftikusSliders[i]);
-		addAndMakeVisible(&labels[i]);
-		
-		//sliders[i].setRange(-10, 10, 1);
-		luftikusSliders[i].addListener(this);
-		luftikusSliders[i].setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-		luftikusSliders[i].setSliderStyle(Slider::RotaryVerticalDrag);
-		labels[i].setText(Proc->getParameterName(i), dontSendNotification);
-	}
-
-	setLookAndFeel(&luftikusLookAndFeel);
-
-	updateSliders();
-
-	addAndMakeVisible(&mastering);
-	mastering.addListener(this);
-	addAndMakeVisible(&analog);
-	analog.addListener(this);
-	addAndMakeVisible(&keepGain);
-	keepGain.addListener(this);
-
-	for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-	{
-		addAndMakeVisible(&types[i]);
-		types[i].addListener(this);
-		types[i].setRadioGroupId(674);
-	}
-
-	{
-		types[0].setButtonText("Off");
-		types[1].setButtonText("2k5");
-		types[2].setButtonText(" 5k");
-		types[3].setButtonText("10k");
-		types[4].setButtonText("20k");
-		types[5].setButtonText("40k");
-	}
-
-	{
-		addAndMakeVisible(&luftikusMasterVol);
-		luftikusMasterVol.addListener(this);
-		luftikusMasterVol.setTextBoxStyle(Slider::TextBoxRight, false, 50, 13);
-		luftikusMasterVol.setSliderStyle(Slider::RotaryVerticalDrag);
-		Range<float> volRange(Proc->getMasterVolume().getRangeDb());
-		luftikusMasterVol.setRange(volRange.getStart(), volRange.getEnd(), 0.1);
-
-		addAndMakeVisible(&masterVolLabel);
-		//masterVolLabel.setFont(Font(10.f));
-	}
-
-	{
-		luftikusSliders[EqDsp::kBand10].setTooltip("Gain/cut 10 Hz band");
-		luftikusSliders[EqDsp::kBand40].setTooltip("Gain/cut 40 Hz band");
-		luftikusSliders[EqDsp::kBand160].setTooltip("Gain/cut 160 Hz band");
-		luftikusSliders[EqDsp::kBand640].setTooltip("Gain/cut 640 Hz band");
-		luftikusSliders[EqDsp::kShelf2k5].setTooltip("Gain/cut 2.5 kHz high shelf");
-		luftikusSliders[EqDsp::kShelfHi].setTooltip("High shelf boost");
-
-		luftikusMasterVol.setTooltip("Output volume trim (in dB)");
-
-		types[0].setTooltip("High shelf boost off");
-		types[1].setTooltip("High shelf boost @ 2.5 kHz");
-		types[2].setTooltip("High shelf boost @ 5 kHz");
-		types[3].setTooltip("High shelf boost @ 10 kHz");
-		types[4].setTooltip("High shelf boost @ 20 kHz");
-		types[5].setTooltip("High shelf boost @ 40 kHz");
-
-		mastering.setTooltip("Enable mastering mode");
-		analog.setTooltip("Enable analog emulation");
-		keepGain.setTooltip("Avoid overall gain boosts/cuts when applying EQ gain");
-
-		addAndMakeVisible(&showTooltips);
-		showTooltips.addListener(this);
-
-		updateTooltipState();
-	}
-
-	background = ImageCache::getFromMemory(BinaryData::bg_luftikus_png, BinaryData::bg_luftikus_pngSize);
-	luftikus = ImageCache::getFromMemory(BinaryData::luftikus_png, BinaryData::luftikus_pngSize);
-
-	setSize (500, 140);
-	startTimer(100);*/
-}
-
-void LuftikusAudioProcessorEditor::initLkjb()
-{/*
-	for (int i=0; i<EqDsp::kNumTypes; ++i)
-	{
-		addAndMakeVisible(&lkjbSliders[i]);
-		addAndMakeVisible(&labels[i]);
-		
-		lkjbSliders[i].addListener(this);
-		lkjbSliders[i].setTextBoxStyle(Slider::NoTextBox, false, 60, 20);
-		lkjbSliders[i].setSliderStyle(Slider::RotaryVerticalDrag);
-		labels[i].setText(Proc->getParameterName(i), dontSendNotification);
-	}
-
-	setLookAndFeel(&lkjbLookAndFeel);
-
-	updateSliders();
-
-	addAndMakeVisible(&mastering);
-	mastering.addListener(this);
-	addAndMakeVisible(&analog);
-	analog.addListener(this);
-	addAndMakeVisible(&keepGain);
-	keepGain.addListener(this);
-
-	for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-	{
-		addAndMakeVisible(&types[i]);
-		types[i].addListener(this);
-		types[i].setRadioGroupId(674);
-	}
-
-	{
-		types[0].setButtonText("Off");
-		types[1].setButtonText("2k5");
-		types[2].setButtonText(" 5k");
-		types[3].setButtonText("10k");
-		types[4].setButtonText("20k");
-		types[5].setButtonText("40k");
-	}
-
-	{
-		addAndMakeVisible(&lkjbMasterVol);
-		lkjbMasterVol.addListener(this);
-		lkjbMasterVol.setTextBoxStyle(Slider::NoTextBox, false, 50, 13);
-		lkjbMasterVol.setSliderStyle(Slider::RotaryVerticalDrag);
-		Range<float> volRange(Proc->getMasterVolume().getRangeDb());
-		lkjbMasterVol.setRange(volRange.getStart(), volRange.getEnd(), 0.1);
-
-		addAndMakeVisible(&masterVolLabel);
-		//masterVolLabel.setFont(Font(10.f));
-	}
-
-	{
-		luftikusSliders[EqDsp::kBand10].setTooltip("Gain/cut 10 Hz band");
-		luftikusSliders[EqDsp::kBand40].setTooltip("Gain/cut 40 Hz band");
-		luftikusSliders[EqDsp::kBand160].setTooltip("Gain/cut 160 Hz band");
-		luftikusSliders[EqDsp::kBand640].setTooltip("Gain/cut 640 Hz band");
-		luftikusSliders[EqDsp::kShelf2k5].setTooltip("Gain/cut 2.5 kHz high shelf");
-		luftikusSliders[EqDsp::kShelfHi].setTooltip("High shelf boost");
-
-		lkjbMasterVol.setTooltip("Output volume trim (in dB)");
-
-		types[0].setTooltip("High shelf boost off");
-		types[1].setTooltip("High shelf boost @ 2.5 kHz");
-		types[2].setTooltip("High shelf boost @ 5 kHz");
-		types[3].setTooltip("High shelf boost @ 10 kHz");
-		types[4].setTooltip("High shelf boost @ 20 kHz");
-		types[5].setTooltip("High shelf boost @ 40 kHz");
-
-		mastering.setTooltip("Enable mastering mode");
-		analog.setTooltip("Enable analog emulation");
-		keepGain.setTooltip("Avoid overall gain boosts/cuts when applying EQ gain");
-
-		addAndMakeVisible(&showTooltips);
-		showTooltips.addListener(this);
-
-		updateTooltipState();
-	}
-
-	background = ImageCache::getFromMemory(BinaryData::bg_png, BinaryData::bg_pngSize);
-
-	setSize (520, 160);
-	startTimer(100);*/
 }
 
 void LuftikusAudioProcessorEditor::initGui()
@@ -586,289 +226,67 @@ void LuftikusAudioProcessorEditor::initGui()
 		analog.setTooltip("Enable analog emulation");
 		keepGain.setTooltip("Avoid overall gain boosts/cuts when applying EQ gain");
 
-		//addAndMakeVisible(&showTooltips);
-		//showTooltips.addListener(this);
-
 		updateTooltipState();
 	}
 
 	background = ImageCache::getFromMemory(BinaryData::luftikus_front_002_png, BinaryData::luftikus_front_002_pngSize);
-	//bgInfo = ImageCache::getFromMemory(BinaryData::luftikus_back_png, BinaryData::luftikus_back_pngSize);
-	//luftikus = ImageCache::getFromMemory(BinaryData::Demo_neueKnobs_png, BinaryData::Demo_neueKnobs_pngSize);
 
 	setSize (720, 205);
 	startTimer(100);
 }
 
-void LuftikusAudioProcessorEditor::resizedLuftikus()
-{/*
-	for (int i=0; i<EqDsp::kNumTypes; ++i)
-	{
-		luftikusSliders[i].setVisible(! showInfo);		
-		labels[i].setVisible(! showInfo);
-	}
-
-	luftikusMasterVol.setVisible(! showInfo);
-	masterVolLabel.setVisible(! showInfo);
-	showTooltips.setVisible(! showInfo);
-
-	if (showInfo)
-	{
-		//for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-		//{
-		//	guiSelector[i].setBounds(400, 30 + 25*i, 100, 20);
-		//	guiSelector[i].setToggleState(Proc->getGuiType() == i, dontSendNotification);
-		//}
-	}
-	else
-	{
-		for (int i=0; i<EqDsp::kNumTypes; ++i)
-		{
-			const int x = 10+i*70 + (i==EqDsp::kShelfHi ? 20 : 0);
-			const int yl = 25 - (i & 1) * 20;
-			const int ys = yl + 20;
-			labels[i].setBounds(x, yl, 70, 20);
-			luftikusSliders[i].setBounds(x, ys, 70, 60);
-		}
-
-		const int x0 = 10 + EqDsp::kNumTypes*70 + 18;
-
-		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-			types[i].setBounds(x0, 7+i*15, 50, 18);
-
-		mastering.setBounds(205, 117, 100, 20);
-		analog.setBounds(305, 117, 100, 20);
-		keepGain.setBounds(405, 117, 90, 20);
-
-		showTooltips.setBounds(140, 117, 60, 20);
-
-		masterVolLabel.setBounds(380, 100, 40, 20);
-		luftikusMasterVol.setBounds(420, 100, 70, 20);
-	}*/
-}
-
-void LuftikusAudioProcessorEditor::resizedLkjb()
-{/*
-	showTooltips.setVisible(! showInfo);
-	masterVolLabel.setVisible(! showInfo);
-	showTooltips.setVisible(! showInfo);
-	lkjbMasterVol.setVisible(! showInfo);
-
-	for (int i=0; i<EqDsp::kNumTypes; ++i)
-	{
-		labels[i].setVisible(! showInfo);
-		lkjbSliders[i].setVisible(! showInfo);
-	}
-
-	if (showInfo)
-	{
-		//for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-		//{
-		//	guiSelector[i].setBounds(400, 30 + 25*i, 100, 20);
-		//	guiSelector[i].setToggleState(Proc->getGuiType() == i, dontSendNotification);
-		//}
-	}
-	else
-	{
-		const int offsX = 10;
-		const int offsY = 10;
-		for (int i=0; i<EqDsp::kNumTypes; ++i)
-		{
-			const int x = offsX + 10+i*70 + (i==EqDsp::kShelfHi ? 20 : 0);
-			const int yl = offsY + 25 - (i & 1) * 20;
-			const int ys = yl + 20 + 10;
-			labels[i].setBounds(x, yl, 70, 20);
-			lkjbSliders[i].setBounds(x+10, ys, 50, 65);
-		}
-
-		const int x0 = 10 + EqDsp::kNumTypes*70 + 18;
-
-		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-			types[i].setBounds(offsX + x0, offsY + 7+i*15, 50, 18);
-
-		mastering.setBounds(offsX + 205, offsY + 117, 100, 20);
-		analog.setBounds(offsX + 305, offsY + 117, 100, 20);
-		keepGain.setBounds(offsX + 405, offsY + 117, 90, 20);
-
-		showTooltips.setBounds(offsX + 140, offsY + 117, 60, 20);
-
-		masterVolLabel.setBounds(offsX + 380, offsY + 100, 40, 20);
-		lkjbMasterVol.setBounds(offsX + 420, offsY + 100, 70, 20);
-	}*/
-}
-
-
-
 void LuftikusAudioProcessorEditor::resizedGui()
 {
-	//for (int i=0; i<EqDsp::kNumTypes; ++i)
-	//	guiSliders[i].setVisible(! showInfo);
+	for (int i=0; i<EqDsp::kNumHighSelves; ++i)
+		types[i].setVisible(true);
 
-	//guiMasterVol.setVisible(! showInfo);
+	const int sw = 90;
+	const int sh = sw + 24;
 
-	//if (showInfo)
-	//{
-	//	for (int i=0; i<LuftikusAudioProcessor::kNumTypes; ++i)
-	//	{
-	//		guiSelector[i].setBounds(500, 50 + 25*i, 200, 20);
-	//		guiSelector[i].setToggleState(Proc->getGuiType() == i, dontSendNotification);
-	//	}
-	//}
-	//else if (! showInfo)
-	{
-		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-			types[i].setVisible(true);
+	const int ya = 67;
+	const int yb = 95;
+	const int yc = 176;
 
-		const int sw = 90;
-		const int sh = sw + 24;
+	guiSliders[EqDsp::kBand10].setBounds(67 - sw/2, yb - sw/2, sw, sh);
+	guiSliders[EqDsp::kBand40].setBounds(167 - sw/2, ya - sw/2, sw, sh);
+	guiSliders[EqDsp::kBand160].setBounds(267 - sw/2, yb - sw/2, sw, sh);
+	guiSliders[EqDsp::kBand640].setBounds(367 - sw/2, ya - sw/2, sw, sh);
+	guiSliders[EqDsp::kShelf2k5].setBounds(467 - sw/2, yb - sw/2, sw, sh);
+	guiSliders[EqDsp::kShelfHi].setBounds(596 - sw/2, ya - sw/2, sw, sh);
 
-		const int ya = 67;
-		const int yb = 95;
-		const int yc = 176;
+	const int mh = 42;
+	const int mw = mh + 55;
+	guiMasterVol.setBounds(595 - mh/2, yc - mh/2, mw, mh);
 
-		guiSliders[EqDsp::kBand10].setBounds(67 - sw/2, yb - sw/2, sw, sh);
-		guiSliders[EqDsp::kBand40].setBounds(167 - sw/2, ya - sw/2, sw, sh);
-		guiSliders[EqDsp::kBand160].setBounds(267 - sw/2, yb - sw/2, sw, sh);
-		guiSliders[EqDsp::kBand640].setBounds(367 - sw/2, ya - sw/2, sw, sh);
-		guiSliders[EqDsp::kShelf2k5].setBounds(467 - sw/2, yb - sw/2, sw, sh);
-		guiSliders[EqDsp::kShelfHi].setBounds(596 - sw/2, ya - sw/2, sw, sh);
+	const int selX = 660;
+	const int selW = 29;
+	const int selH = 21;
 
-		const int mh = 42;
-		const int mw = mh + 35;
-		guiMasterVol.setBounds(595 - mh/2, yc - mh/2, mw, mh);
+	types[EqDsp::kHighOff].setBounds(selX, 24, selW, selH);
+	types[EqDsp::kHigh2k5].setBounds(selX, 43, selW, selH);
+	types[EqDsp::kHigh5k].setBounds(selX, 62, selW, selH);
+	types[EqDsp::kHigh10k].setBounds(selX, 81, selW, selH);
+	types[EqDsp::kHigh20k].setBounds(selX, 100, selW, selH);
+	types[EqDsp::kHigh40k].setBounds(selX, 119, selW, selH);
 
-		const int selX = 660;
-		const int selW = 29;
-		const int selH = 21;
+	const int kw = 52;
+	const int kh = 48;
+	const int ky = 162;
 
-		types[EqDsp::kHighOff].setBounds(selX, 24, selW, selH);
-		types[EqDsp::kHigh2k5].setBounds(selX, 43, selW, selH);
-		types[EqDsp::kHigh5k].setBounds(selX, 62, selW, selH);
-		types[EqDsp::kHigh10k].setBounds(selX, 81, selW, selH);
-		types[EqDsp::kHigh20k].setBounds(selX, 100, selW, selH);
-		types[EqDsp::kHigh40k].setBounds(selX, 119, selW, selH);
-
-		const int kw = 52;
-		const int kh = 48;
-		const int ky = 162;
-
-		mastering.setBounds(242, ky, kw, kh);
-		analog.setBounds(342, ky, kw, kh);
-		keepGain.setBounds(442, ky, kw, kh);
-	}
-}
-
-void LuftikusAudioProcessorEditor::paintLuftikus(Graphics& /*g*/)
-{/*
-    g.setColour (Colours::black);
-	g.drawImageAt(background, 0, 0);
-	g.drawRect(0, 0, getWidth(), getHeight(), 2);
-
-	if (! showInfo)
-	{
-		g.setColour(Colours::white.withAlpha(0.3f));
-		g.drawRect(380, 5, 115, 97);
-		g.drawRect(205, 117, 290, 20);
-	}
-
-	g.setColour(Colours::black);
-	g.drawImageAt(luftikus, 4, 114);*/
-}
-
-void LuftikusAudioProcessorEditor::paintLkjb(Graphics& /*g*/)
-{/*
-    g.setColour (Colours::black);
-	g.drawImageAt(background, 0, 0);
-	//g.drawRect(0, 0, getWidth(), getHeight(), 2);
-
-	const int offsX = 10;
-	const int offsY = 10;
-
-	if (! showInfo)
-	{
-		g.setColour(Colours::white.withAlpha(0.3f));
-		g.drawRect(offsX + 380, offsY + 5, 115, 97);
-		g.drawRect(offsX + 205, offsY + 117, 290, 20);
-	}
-
-	g.setColour(Colours::black);*/
+	mastering.setBounds(242, ky, kw, kh);
+	analog.setBounds(342, ky, kw, kh);
+	keepGain.setBounds(442, ky, kw, kh);
 }
 
 void LuftikusAudioProcessorEditor::paintGui(Graphics& g)
 {
     g.setColour (Colours::black);
-	//g.drawImageAt(showInfo ? bgInfo : background, 0, 0);
 	g.drawImageAt(background, 0, 0);
 }
 
 void LuftikusAudioProcessorEditor::updateSliders()
 {
-	switch(guiType)
-	{
-	//case LuftikusAudioProcessor::kLuftikus:
-	//	updateSlidersLuftikus();
-	//	break;
-	//case LuftikusAudioProcessor::kLkjb:
-	//	updateSlidersLkjb();
-	//	break;
-	default:
-	case LuftikusAudioProcessor::kGui:
-		updateSlidersGui();
-		break;
-	}
-}
-
-void LuftikusAudioProcessorEditor::updateSlidersLuftikus()
-{/*
-	if (mastering.getToggleState())
-	{
-		for (int i=0; i<EqDsp::kShelfHi; ++i)
-		{
-			const double sv = luftikusSliders[i].getValue();
-			const double rounding = sv > 0 ? +0.5 : sv < 0 ? -0.5 : 0;
-			luftikusSliders[i].setValue((double) int(sv+rounding), sendNotificationAsync);
-			luftikusSliders[i].setRange(-10, 10, 1);
-			//sliders[i].setLabelText();
-		}
-		luftikusSliders[EqDsp::kShelfHi].setValue(0.5 * int(0.5 + 2*luftikusSliders[EqDsp::kShelfHi].getValue()), sendNotificationAsync);
-		luftikusSliders[EqDsp::kShelfHi].setRange(0, 10, 0.5);
-	}
-	else
-	{
-		for (int i=0; i<EqDsp::kShelfHi; ++i)
-		{
-			luftikusSliders[i].setRange(-10, 10, 0.1);
-			//sliders[i].setLabelText();
-		}
-
-		luftikusSliders[EqDsp::kShelfHi].setRange(0, 10, 0.05);
-	}*/
-}
-void LuftikusAudioProcessorEditor::updateSlidersLkjb()
-{/*
-	if (mastering.getToggleState())
-	{
-		for (int i=0; i<EqDsp::kShelfHi; ++i)
-		{
-			const double sv = lkjbSliders[i].getValue();
-			const double rounding = sv > 0 ? +0.5 : sv < 0 ? -0.5 : 0;
-			lkjbSliders[i].setValue((double) int(sv+rounding), sendNotificationAsync);
-			lkjbSliders[i].setRange(-10, 10, 1);
-			//sliders[i].setLabelText();
-		}
-		lkjbSliders[EqDsp::kShelfHi].setValue(0.5 * int(0.5 + 2*lkjbSliders[EqDsp::kShelfHi].getValue()), sendNotificationAsync);
-		lkjbSliders[EqDsp::kShelfHi].setRange(0, 10, 0.5);
-	}
-	else
-	{
-		for (int i=0; i<EqDsp::kShelfHi; ++i)
-		{
-			lkjbSliders[i].setRange(-10, 10, 0.1);
-			//sliders[i].setLabelText();
-		}
-
-		lkjbSliders[EqDsp::kShelfHi].setRange(0, 10, 0.05);
-	}*/
+	updateSlidersGui();
 }
 
 void LuftikusAudioProcessorEditor::updateSlidersGui()
@@ -896,148 +314,6 @@ void LuftikusAudioProcessorEditor::updateSlidersGui()
 
 		guiSliders[EqDsp::kShelfHi].setRange(0, 10, 0.05);
 	}
-}
-
-void LuftikusAudioProcessorEditor::timerCallbackLuftikus()
-{/*
-	for (int i=0; i<EqDsp::kShelfHi; ++i)
-	{
-		const double newValue = Proc->getParameter(i)*20-10;
-		const double sliderVal = luftikusSliders[i].getValue();
-
-		if (fabs(sliderVal - newValue) > 0.05)
-		{
-			luftikusSliders[i].setValue(newValue, dontSendNotification);
-			//luftikusSliders[i].setLabelText();
-		}
-	}
-
-	{
-		const double newValue = Proc->getParameter(EqDsp::kShelfHi)*10;
-
-		if (luftikusSliders[EqDsp::kShelfHi].getValue() != newValue)
-		{
-			luftikusSliders[EqDsp::kShelfHi].setValue(newValue, dontSendNotification);
-			//sliders[EqDsp::kShelfHi].setLabelText();
-		}
-	}
-
-	{
-		
-
-		const double newValue = Proc->getMasterVolume().getVolumeDb();
-
-		if (fabs(luftikusMasterVol.getValue() - newValue) > 0.05)
-		{
-			luftikusMasterVol.setValue(newValue, dontSendNotification);
-			//masterVol->setLabelText();
-		}
-	}
-
-	{
-		const float procVal = Proc->getParameter(EqDsp::kNumTypes);
-		const int newType = int(procVal * (EqDsp::kNumHighSelves -1));		
-		jassert(newType >=0 && newType < EqDsp::kNumHighSelves);
-
-		int curType = -1;
-		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-			if (types[i].getToggleState())
-				curType = i;
-
-		if (curType != newType && newType >=0 && newType < EqDsp::kNumHighSelves)
-		{
-			types[newType].setToggleState(true, dontSendNotification);
-		}
-	}
-
-	{
-		const bool procAnalog = Proc->getParameter(LuftikusAudioProcessor::kAnalog) > 0.5f;
-		const bool procMastering = Proc->getParameter(LuftikusAudioProcessor::kMastering) > 0.5f;
-		const bool procKeepGain = Proc->getParameter(LuftikusAudioProcessor::kKeepGain) > 0.5f;
-
-		if (procAnalog != analog.getToggleState())
-			analog.setToggleState(procAnalog, dontSendNotification);
-
-		if (procMastering != mastering.getToggleState())
-		{
-			mastering.setToggleState(procMastering, dontSendNotification);
-			updateSliders();
-		}
-
-		if (procKeepGain != keepGain.getToggleState())
-			keepGain.setToggleState(procKeepGain, dontSendNotification);
-	}*/
-}
-
-void LuftikusAudioProcessorEditor::timerCallbackLkjb()
-{/*
-	for (int i=0; i<EqDsp::kShelfHi; ++i)
-	{
-		const double newValue = Proc->getParameter(i)*20-10;
-		const double sliderVal = lkjbSliders[i].getValue();
-
-		if (fabs(sliderVal - newValue) > 0.05)
-		{
-			lkjbSliders[i].setValue(newValue, dontSendNotification);
-			lkjbSliders[i].setLabelText();
-		}
-	}
-
-	{
-		const double newValue = Proc->getParameter(EqDsp::kShelfHi)*10;
-
-		if (lkjbSliders[EqDsp::kShelfHi].getValue() != newValue)
-		{
-			lkjbSliders[EqDsp::kShelfHi].setValue(newValue, dontSendNotification);
-			lkjbSliders[EqDsp::kShelfHi].setLabelText();
-		}
-	}
-
-	{
-		
-
-		const double newValue = Proc->getMasterVolume().getVolumeDb();
-
-		if (fabs(lkjbMasterVol.getValue() - newValue) > 0.05)
-		{
-			lkjbMasterVol.setValue(newValue, dontSendNotification);
-			//masterVol->setLabelText();
-		}
-	}
-
-	{
-		const float procVal = Proc->getParameter(EqDsp::kNumTypes);
-		const int newType = int(procVal * (EqDsp::kNumHighSelves -1));		
-		jassert(newType >=0 && newType < EqDsp::kNumHighSelves);
-
-		int curType = -1;
-		for (int i=0; i<EqDsp::kNumHighSelves; ++i)
-			if (types[i].getToggleState())
-				curType = i;
-
-		if (curType != newType && newType >=0 && newType < EqDsp::kNumHighSelves)
-		{
-			types[newType].setToggleState(true, dontSendNotification);
-		}
-	}
-
-	{
-		const bool procAnalog = Proc->getParameter(LuftikusAudioProcessor::kAnalog) > 0.5f;
-		const bool procMastering = Proc->getParameter(LuftikusAudioProcessor::kMastering) > 0.5f;
-		const bool procKeepGain = Proc->getParameter(LuftikusAudioProcessor::kKeepGain) > 0.5f;
-
-		if (procAnalog != analog.getToggleState())
-			analog.setToggleState(procAnalog, dontSendNotification);
-
-		if (procMastering != mastering.getToggleState())
-		{
-			mastering.setToggleState(procMastering, dontSendNotification);
-			updateSliders();
-		}
-
-		if (procKeepGain != keepGain.getToggleState())
-			keepGain.setToggleState(procKeepGain, dontSendNotification);
-	}*/
 }
 
 void LuftikusAudioProcessorEditor::timerCallbackGui()
@@ -1072,7 +348,6 @@ void LuftikusAudioProcessorEditor::timerCallbackGui()
 		{
 			guiMasterVol.setValue(newValue, dontSendNotification);
 			guiMasterVol.setLabelText();
-			//masterVol->setLabelText();
 		}
 	}
 

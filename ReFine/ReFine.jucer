@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="LuIheG" name="ReFine" projectType="audioplug" version="1.1.0"
+<JUCERPROJECT id="LuIheG" name="ReFine" projectType="audioplug" version="1.2.0"
               bundleIdentifier="com.lkjb.ReFine" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildRTAS="0" buildAAX="0"
               pluginName="ReFine" pluginDesc="ReFine" pluginManufacturer="lkjb"
@@ -8,8 +8,8 @@
               pluginIsSynth="0" pluginWantsMidiIn="0" pluginProducesMidiOut="0"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="1"
               pluginAUExportPrefix="ReFineAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.ReFine"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0"
-              buildAUv3="0" pluginIsMidiEffectPlugin="0">
+              pluginAAXCategory="2" jucerVersion="5.4.3" buildAUv3="0" pluginIsMidiEffectPlugin="0"
+              pluginFormats="buildVST,buildVST3,buildAU" pluginCharacteristicsValue="pluginEditorRequiresKeys">
   <MAINGROUP id="gUxuDE" name="ReFine">
     <GROUP id="{2DC48DCE-095E-DE95-C64A-5D8FB812F956}" name="Source">
       <GROUP id="{17EB982A-BBB8-1DEC-D807-5D15B2D01E77}" name="ressources">
@@ -48,14 +48,14 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="" vstFolder="../VST3 SDK"
-               vst3Folder="../VST3 SDK" extraDefs="">
+               extraDefs="">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="10.11 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
+        <CONFIGURATION name="Debug" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
                        isDebug="1" optimisation="1" targetName="lkjb_ReFine" cppLanguageStandard="c++11"
                        cppLibType="libc++"/>
-        <CONFIGURATION name="Release" osxSDK="10.11 SDK" osxCompatibility="10.7 SDK"
-                       osxArchitecture="64BitUniversal" isDebug="0" optimisation="3"
-                       targetName="lkjb_ReFine" cppLanguageStandard="c++11" cppLibType="libc++"/>
+        <CONFIGURATION name="Release" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
+                       isDebug="0" optimisation="3" targetName="lkjb_ReFine" cppLanguageStandard="c++11"
+                       cppLibType="libc++"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../juce/modules"/>
@@ -65,39 +65,32 @@
         <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../VST3 SDK"
-            extraCompilerFlags="/arch:SSE2" vst3Folder="../VST3 SDK" IPPLibrary="true">
+    <VS2017 targetFolder="Builds/VisualStudio2017">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="lkjb_ReFine"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="lkjb_ReFine"/>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release" alwaysGenerateDebugSymbols="1"/>
+        <CONFIGURATION isDebug="1" name="Debug32" winArchitecture="Win32"/>
+        <CONFIGURATION isDebug="0" name="Release32" winArchitecture="Win32" alwaysGenerateDebugSymbols="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../juce/modules"/>
-        <MODULEPATH id="juce_events" path="../juce/modules"/>
-        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
       </MODULEPATHS>
-    </VS2015>
+    </VS2017>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
@@ -108,4 +101,8 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+    <OSX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

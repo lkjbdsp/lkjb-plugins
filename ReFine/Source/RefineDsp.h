@@ -93,6 +93,7 @@ public:
 	float getLevel() const;
 
 	bool getRmsData(Array<float>& d, Array<uint32>& c) const;
+    int getLatencySamples() const;
 
 private:
 
@@ -180,6 +181,7 @@ private:
 	CircularBuffer<float> delayR;
 
 	juce::CriticalSection processLock;
+    static const int delaySamples44k1 = 512;
 };
 
 #endif  // SEPDSP_H_INCLUDED

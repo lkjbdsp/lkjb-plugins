@@ -2,6 +2,13 @@
 #include "PluginEditor.h"
 #include "xmmintrin.h"
 
+
+#if JUCE_WINDOWS
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#endif
+
+
 ReFinedAudioProcessor::ReFinedAudioProcessor()    
 {
     parameters = new AudioProcessorValueTreeState(*this, nullptr);
@@ -9,6 +16,8 @@ ReFinedAudioProcessor::ReFinedAudioProcessor()
     parameters->createAndAddParameter("green", "green", "", NormalisableRange<float>(0.f, 1.f), 0.f, [](float val) { return String(val, 2); }, [](const String& s) { return (float) s.getDoubleValue(); });
     parameters->createAndAddParameter("blue", "blue", "", NormalisableRange<float>(0.f, 1.f), 0.f, [](float val) { return String(val, 2); }, [](const String& s) { return (float) s.getDoubleValue(); });
     parameters->createAndAddParameter("x2", "x2", "", NormalisableRange<float>(0.f, 1.f), 0.f, [](float val) { return val < 0.5f ? "Off" : "On"; }, [](const String& s) { return s.trim() == "1" || s.trim().toLowerCase() == "on" ? 1.f : 0.f; });
+
+    parameters->state = ValueTree("STATE");
 }
 
 ReFinedAudioProcessor::~ReFinedAudioProcessor()
@@ -60,7 +69,8 @@ void ReFinedAudioProcessor::changeProgramName (int /*index*/, const String& /*ne
 
 void ReFinedAudioProcessor::prepareToPlay (double newSampleRate, int /*samplesPerBlock*/)
 {
-    dsp.setSampleRate(newSampleRate);    
+    dsp.setSampleRate(newSampleRate);
+    setLatencySamples(dsp.getLatencySamples());
 }
 
 void ReFinedAudioProcessor::releaseResources()
@@ -129,3 +139,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new ReFinedAudioProcessor();
 }
+
+
+#if JUCE_WINDOWS
+#pragma warning (pop)
+#endif

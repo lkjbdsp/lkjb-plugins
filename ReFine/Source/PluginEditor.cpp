@@ -27,6 +27,7 @@ ReFinedAudioProcessorEditor::ReFinedAudioProcessorEditor (ReFinedAudioProcessor&
 
 ReFinedAudioProcessorEditor::~ReFinedAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

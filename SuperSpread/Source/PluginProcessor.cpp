@@ -12,6 +12,11 @@
 #include "PluginEditor.h"
 #include <emmintrin.h>
 
+#if JUCE_WINDOWS
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#endif
+
 //==============================================================================
 SuperSpreadAudioProcessor::SuperSpreadAudioProcessor()
 {
@@ -25,6 +30,8 @@ SuperSpreadAudioProcessor::SuperSpreadAudioProcessor()
 
     for (int i=0; i<12; ++i)
         shifter.add(new PitchShifter(2048));
+
+    parameterState->state = ValueTree("State");
 }
 
 SuperSpreadAudioProcessor::~SuperSpreadAudioProcessor()
@@ -207,3 +214,7 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SuperSpreadAudioProcessor();
 }
+
+#if JUCE_WINDOWS
+#pragma warning (pop)
+#endif

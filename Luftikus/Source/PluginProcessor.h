@@ -14,6 +14,11 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "dsp/eqdsp.h"
 
+#if JUCE_WINDOWS
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#endif
+
 //==============================================================================
 /**
 */
@@ -180,5 +185,9 @@ private:
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LuftikusAudioProcessor);
 };
+
+#if JUCE_WINDOWS
+#pragma warning (pop)
+#endif
 
 #endif  // __PLUGINPROCESSOR_H_25C19BD3__

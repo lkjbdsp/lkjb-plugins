@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="siIf3v" name="SuperSpread" projectType="audioplug" version="1.0.1"
+<JUCERPROJECT id="siIf3v" name="SuperSpread" projectType="audioplug" version="1.1.0"
               bundleIdentifier="com.lkjb.SuperSpread" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="SuperSpread" pluginDesc="SuperSpread"
@@ -8,8 +8,8 @@
               pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0" pluginWantsMidiIn="0"
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="1"
               pluginAUExportPrefix="SuperSpreadAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.SuperSpread"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0"
-              companyName="lkjb">
+              pluginAAXCategory="2" jucerVersion="5.4.3" companyName="lkjb"
+              pluginFormats="buildVST,buildVST3,buildAU" pluginCharacteristicsValue="pluginEditorRequiresKeys">
   <MAINGROUP id="ZJAyhD" name="SuperSpread">
     <GROUP id="{725AD8B4-6C1E-E7C0-BDA5-B5F87CD9F38A}" name="Source">
       <FILE id="MY2Jty" name="knob.png" compile="0" resource="1" file="Source/knob.png"/>
@@ -26,13 +26,13 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" vst3Folder="../VST3 SDK">
+    <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="SuperSpread"
-                       osxSDK="10.11 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="lkjb_SuperSpread"
+                       osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
                        cppLanguageStandard="c++11" cppLibType="libc++"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="SuperSpread"
-                       osxSDK="10.11 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="lkjb_SuperSpread"
+                       osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
                        cppLanguageStandard="c++11" cppLibType="libc++"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -47,27 +47,25 @@
         <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" vst3Folder="../VST3 SDK">
+    <VS2017 targetFolder="Builds/VisualStudio2017">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="SuperSpread"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="SuperSpread"/>
-        <CONFIGURATION name="Release x64" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="SuperSpread"/>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release" alwaysGenerateDebugSymbols="1"/>
+        <CONFIGURATION isDebug="1" name="Debug32" winArchitecture="Win32"/>
+        <CONFIGURATION isDebug="0" name="Release32" alwaysGenerateDebugSymbols="1" winArchitecture="Win32"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../juce/modules"/>
-        <MODULEPATH id="juce_events" path="../juce/modules"/>
-        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
       </MODULEPATHS>
-    </VS2015>
+    </VS2017>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
@@ -81,4 +79,8 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+    <OSX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>

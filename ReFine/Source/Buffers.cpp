@@ -68,7 +68,7 @@ void RmsLevel::clear()
     index = 0;
 }
 
-void RmsLevel::process float in)
+void RmsLevel::process (float in)
 {
     const double x = in*in;
     rms += x - data[index];

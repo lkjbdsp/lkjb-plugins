@@ -14,6 +14,12 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PitchShifter.h"
 
+#if JUCE_WINDOWS
+#pragma warning (push)
+#pragma warning (disable: 4996)
+#endif
+
+
 class Delay
 {
 public:
@@ -120,5 +126,8 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SuperSpreadAudioProcessor)
 };
 
+#if JUCE_WINDOWS
+#pragma warning (pop)
+#endif
 
 #endif  // PLUGINPROCESSOR_H_INCLUDED

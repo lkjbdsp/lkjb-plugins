@@ -58,6 +58,7 @@ SuperSpreadAudioProcessorEditor::SuperSpreadAudioProcessorEditor (SuperSpreadAud
 
 SuperSpreadAudioProcessorEditor::~SuperSpreadAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
